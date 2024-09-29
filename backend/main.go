@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"trip-planner/db"
+	"trip-planner/infra"
+	"trip-planner/router"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -17,15 +16,12 @@ func main() {
 		e.Logger.Fatal("error loading .env file")
 	}
 
-	db, err := db.InitDB()
+	appConfig, err := infra.InitAppConfig()
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
-	fmt.Println(db)
-	// テスト
-	e.GET("/api/test", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+
+	router.Router(e, appConfig)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }
