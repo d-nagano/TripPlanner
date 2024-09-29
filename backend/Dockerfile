@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine AS builder
+FROM golang:1.23.1-alpine AS builder
 
 # 作業ディレクトリの設定
 WORKDIR /var/www/backend

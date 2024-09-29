@@ -7,9 +7,9 @@ services:
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=TripPlanner
-      - MYSQL_PASSWORD=TripPlanner
-      - MYSQL_DATABASE=TripPlanner
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
+      - MYSQL_DATABASE=tripplanner
     ports:
       - "3306:3306"
 

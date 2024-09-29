@@ -1,13 +1,13 @@
 CREATE DATABASE IF NOT EXISTS TripPlanner;
 
-CREATE TABLE IF NOT EXISTS prefectures (
+CREATE TABLE IF NOT EXISTS prefecture (
   `id` INT NOT NULL,
   `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
 INSERT INTO
-  prefectures (id, name)
+  prefecture (id, name)
 VALUES
   (1, '北海道'),
   (2, '青森県'),
@@ -56,3 +56,26 @@ VALUES
   (45, '宮崎県'),
   (46, '鹿児島県'),
   (47, '沖縄県');
+
+CREATE TABLE IF NOT EXISTS trip_plan (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(64) NOT NULL,
+  `destination` VARCHAR(64) NOT NULL,
+  `departure_place` VARCHAR(64) NOT NULL,
+  `departure_date` DATETIME(6) NOT NULL,
+  `arrival_date` DATETIME(6) NOT NULL,
+  `created_at` DATETIME(6) NOT NULL,
+  `updated_at` DATETIME(6) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS user (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(64) NOT NULL,
+  `email` VARCHAR(64) NOT NULL,
+  `password` VARCHAR(64) NOT NULL,
+  `created_at` DATETIME(6) NOT NULL,
+  `updated_at` DATETIME(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`email`)
+);
