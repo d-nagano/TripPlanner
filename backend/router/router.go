@@ -11,4 +11,5 @@ func Router(e *echo.Echo, appConfig *infra.AppConfig) {
 	handler := handlers.NewHandler(appConfig)
 
 	e.GET("/api/prefectures", handler.GetPrefectures)
+	e.POST("/api/signup", handler.SignUp)
 }

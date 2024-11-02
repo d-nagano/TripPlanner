@@ -3,10 +3,10 @@ package models
 import "time"
 
 type User struct {
-	ID        int `grom:"primaryKey"`
-	Name      string
-	Email     string `grom:"unique"`
-	Password  string
+	ID        int       `grom:"primaryKey"`
+	Name      string    `json:"name"`
+	Email     string    `grom:"unique" json:"email"`
+	Password  string    `json:"password"`
 	CreatedAt time.Time `gorm:"type:datetime(6)"`
 	UpdatedAt time.Time `gorm:"type:datetime(6)"`
 }
