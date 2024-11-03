@@ -4,7 +4,6 @@ import (
 	"errors"
 	"trip-planner/models"
 
-	"github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -21,17 +20,12 @@ func NewUserRepo(db *gorm.DB) UserRepo {
 }
 
 func (ur *userRepo) CreateUser(user *models.User) error {
+	if user == nil {
+		return errors.New("user is nil")
+	}
+
 	if err := ur.db.Create(user).Error; err != nil {
-		if mysqlErr, ok := err.(*mysql.MySQLError); ok {
-			switch mysqlErr.Number {
-			case 1062:
-				return errors.New("dupulicate entry")
-			default:
-				// nope
-			}
-		} else {
-			return err
-		}
+		return err
 	}
 
 	return nil

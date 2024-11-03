@@ -1,9 +1,11 @@
 package usecases
 
 import (
+	"errors"
 	"trip-planner/models"
 	"trip-planner/repos"
 
+	"github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -22,6 +24,8 @@ func NewUserUseCase(db *gorm.DB) UserUseCase {
 	}
 }
 
+var ErrDuplicateEmail = errors.New("duplicate entry")
+
 func (uu *userUseCase) SignUp(user models.User) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -34,6 +38,11 @@ func (uu *userUseCase) SignUp(user models.User) error {
 		Password: string(hash),
 	}
 	if err := uu.UserRepo.CreateUser(newUser); err != nil {
+		if mysqlErr, ok := err.(*mysql.MySQLError); ok {
+			if mysqlErr.Number == 1062 {
+				return ErrDuplicateEmail
+			}
+		}
 		return err
 	}
 
