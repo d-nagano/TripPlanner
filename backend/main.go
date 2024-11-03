@@ -2,6 +2,7 @@ package main
 
 import (
 	"trip-planner/infra"
+	"trip-planner/requests"
 	"trip-planner/router"
 
 	"github.com/joho/godotenv"
@@ -20,6 +21,8 @@ func main() {
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
+
+	requests.InitValidator()
 
 	router.Router(e, appConfig)
 

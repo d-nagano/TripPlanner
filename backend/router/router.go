@@ -13,4 +13,5 @@ func Router(e *echo.Echo, appConfig *infra.AppConfig) {
 
 	e.Use(middleware.CORS())
 	e.GET("/api/prefectures", handler.GetPrefectures)
+	e.POST("/api/signup", handler.SignUp)
 }
