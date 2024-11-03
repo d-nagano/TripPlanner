@@ -90,7 +90,7 @@ func (sr *SignUpRequest) validatePassword() error {
 			case "required":
 				return ErrEmptyPassword
 			case "password":
-				return ErrLongPassword
+				return ErrInvalidPassword
 			case "min":
 				return ErrShortPassword
 			case "max":
@@ -106,11 +106,11 @@ func checkPassword(fl validator.FieldLevel) bool {
 	password := fl.Field().String()
 	isLowerCase := checkRegexp("[a-z]", password)
 	isUpperCase := checkRegexp("[A-Z]", password)
-	isNumerc := checkRegexp("[0-9]", password)
+	isNumeric := checkRegexp("[0-9]", password)
 	availableChar := checkRegexp(`^[0-9a-zA-Z\-^$*.@]+$`, password)
 	isSymbol := checkRegexp(`[\-^$*.@]`, password)
 
-	return isLowerCase && isUpperCase && isNumerc && availableChar && isSymbol
+	return isLowerCase && isUpperCase && isNumeric && availableChar && isSymbol
 }
 
 func checkRegexp(reg, str string) bool {
