@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div>
     <ul>
       <li v-for="prefecture in prefectures" :key="prefecture.id">
         {{ prefecture.name }}
@@ -36,13 +36,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
