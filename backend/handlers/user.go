@@ -18,7 +18,7 @@ func (h *AppHandler) SignUp(c echo.Context) error {
 	if errs := req.Validate(); errs != nil {
 		var errorMessages []string
 		for _, err := range errs {
-			c.Logger().Warn(err.Error())
+			h.Logger.Warn().Msg(err.Error())
 			switch err {
 			case requests.ErrEmptyName:
 				errorMessages = append(errorMessages, "名前は必須です。")
@@ -54,10 +54,10 @@ func (h *AppHandler) SignUp(c echo.Context) error {
 	if err := uu.SignUp(user); err != nil {
 		switch err {
 		case usecases.ErrDuplicateEmail:
-			c.Logger().Warn(err.Error())
+			h.Logger.Warn().Msg(err.Error())
 			return c.JSON(http.StatusBadRequest, "このメールアドレスは既に登録済みです。")
 		default:
-			c.Logger().Error(err.Error())
+			h.Logger.Error().Msg(err.Error())
 			return c.JSON(http.StatusInternalServerError, "ユーザーの登録中にエラーが発生しました。")
 		}
 
