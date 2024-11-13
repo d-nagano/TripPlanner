@@ -65,3 +65,26 @@ func (h *AppHandler) SignUp(c echo.Context) error {
 
 	return c.NoContent(http.StatusNoContent)
 }
+
+func (h *AppHandler) Login(c echo.Context) error {
+	var user models.User
+	if err := c.Bind(&user); err != nil {
+		return c.JSON(http.StatusBadRequest, "リクエストの形式が正しくありません。")
+	}
+
+	uu := usecases.NewUserUseCase(h.AppConfig.DB)
+
+	token, err := uu.Login(user)
+	if err != nil {
+		switch err {
+		case usecases.ErrPasswordMismatch:
+			h.Logger.Warn().Msg(err.Error())
+			return c.JSON(http.StatusUnauthorized, "ログインに失敗しました。入力されたログイン情報が間違っています。")
+		default:
+			h.Logger.Error().Msg(err.Error())
+			return c.JSON(http.StatusInternalServerError, "ログイン中にエラーが発生しました。")
+		}
+	}
+
+	return c.JSON(http.StatusOK, token)
+}

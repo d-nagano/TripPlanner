@@ -5,6 +5,8 @@ import (
 	"trip-planner/handlers"
 	"trip-planner/infra"
 
+	"github.com/golang-jwt/jwt/v5"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog"
@@ -30,4 +32,15 @@ func Router(e *echo.Echo, appConfig *infra.AppConfig) {
 	handler := handlers.NewHandler(appConfig, logger)
 	e.GET("/api/prefectures", handler.GetPrefectures)
 	e.POST("/api/signup", handler.SignUp)
+	e.POST("/api/login", handler.Login)
+
+	g := e.Group("/trip-planner")
+
+	config := echojwt.Config{
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return new(infra.JwtCustomClaims)
+		},
+		SigningKey: []byte("secret"),
+	}
+	g.Use(echojwt.WithConfig(config))
 }
