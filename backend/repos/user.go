@@ -9,6 +9,7 @@ import (
 
 type UserRepo interface {
 	CreateUser(*models.User) error
+	FindByEmail(string) (*models.User, error)
 }
 
 type userRepo struct {
@@ -29,4 +30,16 @@ func (ur *userRepo) CreateUser(user *models.User) error {
 	}
 
 	return nil
+}
+
+func (ur *userRepo) FindByEmail(email string) (*models.User, error) {
+	var user *models.User
+	if err := ur.db.Where("email = ?", email).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return user, nil
 }
