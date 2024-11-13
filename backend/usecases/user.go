@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"errors"
+	"os"
 	"time"
 	"trip-planner/infra"
 	"trip-planner/models"
@@ -84,7 +85,7 @@ func (uu *userUseCase) Login(user models.User) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	tokenString, err := token.SignedString([]byte("secret"))
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
 	if err != nil {
 		return "", err
 	}

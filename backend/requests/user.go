@@ -14,6 +14,11 @@ type SignUpRequest struct {
 	Password string `validate:"required,password,min=8,max=64"`
 }
 
+type LoginRequest struct {
+    Email    string `json:"email"`
+    Password string `json:"password"`
+}
+
 var (
 	ErrEmptyName       = errors.New("name is empty")
 	ErrLongName        = errors.New("name is too long")

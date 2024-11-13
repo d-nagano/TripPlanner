@@ -67,13 +67,17 @@ func (h *AppHandler) SignUp(c echo.Context) error {
 }
 
 func (h *AppHandler) Login(c echo.Context) error {
-	var user models.User
-	if err := c.Bind(&user); err != nil {
+	var loginRequest requests.LoginRequest
+	if err := c.Bind(&loginRequest); err != nil {
 		return c.JSON(http.StatusBadRequest, "リクエストの形式が正しくありません。")
 	}
 
 	uu := usecases.NewUserUseCase(h.AppConfig.DB)
 
+	user := models.User{
+		Email: loginRequest.Email,
+		Password: loginRequest.Password,
+	}
 	token, err := uu.Login(user)
 	if err != nil {
 		switch err {

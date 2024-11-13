@@ -1,11 +1,11 @@
 package router
 
 import (
+	"net/http"
 	"os"
 	"trip-planner/handlers"
 	"trip-planner/infra"
 
-	"github.com/golang-jwt/jwt/v5"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -37,10 +37,12 @@ func Router(e *echo.Echo, appConfig *infra.AppConfig) {
 	g := e.Group("/trip-planner")
 
 	config := echojwt.Config{
-		NewClaimsFunc: func(c echo.Context) jwt.Claims {
-			return new(infra.JwtCustomClaims)
+		SigningKey:  []byte(os.Getenv("JWT_SECRET_KEY")),
+		TokenLookup: "header:Authorization",
+		ErrorHandler: func(c echo.Context, err error) error {
+			logger.Warn().Msg("invalid token")
+			return c.JSON(http.StatusUnauthorized, "認証エラー")
 		},
-		SigningKey: []byte("secret"),
 	}
 	g.Use(echojwt.WithConfig(config))
 }
