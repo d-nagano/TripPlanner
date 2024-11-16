@@ -13,7 +13,11 @@ import (
 )
 
 func Router(e *echo.Echo, appConfig *infra.AppConfig) {
-	e.Use(middleware.CORS())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins:     []string{"https://labstack.com", "https://labstack.net"},
+		AllowMethods:     []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+		AllowCredentials: true,
+	}))
 
 	logger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
@@ -38,7 +42,7 @@ func Router(e *echo.Echo, appConfig *infra.AppConfig) {
 
 	config := echojwt.Config{
 		SigningKey:  []byte(os.Getenv("JWT_SECRET_KEY")),
-		TokenLookup: "header:Authorization",
+		TokenLookup: "cookie:token",
 		ErrorHandler: func(c echo.Context, err error) error {
 			logger.Warn().Msg("invalid token")
 			return c.JSON(http.StatusUnauthorized, "認証エラー")

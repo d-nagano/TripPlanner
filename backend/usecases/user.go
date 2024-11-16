@@ -31,6 +31,7 @@ func NewUserUseCase(db *gorm.DB) UserUseCase {
 
 var (
 	ErrDuplicateEmail   = errors.New("duplicate entry")
+	ErrorUserNotExist   = errors.New("user dose not Exist")
 	ErrPasswordMismatch = errors.New("password is mismatch")
 )
 
@@ -63,7 +64,7 @@ func (uu *userUseCase) Login(user models.User) (string, error) {
 		return "", err
 	}
 	if registeredUser == nil {
-		return "", ErrPasswordMismatch
+		return "", ErrorUserNotExist
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(registeredUser.Password), []byte(user.Password))
