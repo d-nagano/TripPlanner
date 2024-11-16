@@ -11,8 +11,7 @@ export const fetchUserSignUp = async (user: User) => {
 
 export const fetchUserLogin = async (user: LoginRequest) => {
     try {
-        const response = await axios.post('http://localhost/api/login', user);
-        return response.data
+        await axios.post('http://localhost/api/login', user);
     } catch (error: any) {
         throw error;
     }
