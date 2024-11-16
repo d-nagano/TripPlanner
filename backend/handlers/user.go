@@ -82,7 +82,7 @@ func (h *AppHandler) Login(c echo.Context) error {
 	token, err := uu.Login(user)
 	if err != nil {
 		switch err {
-		case usecases.ErrPasswordMismatch, usecases.ErrorUserNotExist:
+		case usecases.ErrPasswordMismatch, usecases.ErrUserNotExist:
 			h.Logger.Warn().Msg(err.Error())
 			return c.JSON(http.StatusUnauthorized, "ログインに失敗しました。入力されたログイン情報が間違っています。")
 		default:
@@ -96,6 +96,8 @@ func (h *AppHandler) Login(c echo.Context) error {
 		Value:    token,
 		Expires:  time.Now().Add(24 * time.Hour),
 		HttpOnly: true,
+		Path:     "/api",
+		SameSite: http.SameSiteStrictMode,
 	}
 	c.SetCookie(cookie)
 

@@ -10,6 +10,7 @@ require (
 	github.com/labstack/echo-jwt/v4 v4.2.0
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/rs/zerolog v1.33.0
+	golang.org/x/time v0.5.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.12
 )
@@ -20,7 +21,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
-	golang.org/x/time v0.5.0 // indirect
 )
 
 require (

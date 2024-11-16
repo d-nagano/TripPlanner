@@ -10,14 +10,15 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog"
+	"golang.org/x/time/rate"
 )
 
 func Router(e *echo.Echo, appConfig *infra.AppConfig) {
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins:     []string{"https://labstack.com", "https://labstack.net"},
 		AllowMethods:     []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 		AllowCredentials: true,
 	}))
+	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(rate.Limit(10))))
 
 	logger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
