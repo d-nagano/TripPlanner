@@ -13,7 +13,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input v-model="user.password" class="form-control" required />
+                <input v-model="user.password" type="password" class="form-control" required />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -25,8 +25,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { fetchUserSignUp } from '../hooks/user';
-import type { User } from '../types/types';
+import { fetchUserSignUp } from '../hooks/users';
+import type { User } from '../types/users.ts';
 import axios from 'axios';
 import { useRouter } from "vue-router";
 
