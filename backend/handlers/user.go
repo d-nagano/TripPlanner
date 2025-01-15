@@ -103,3 +103,17 @@ func (h *AppHandler) Login(c echo.Context) error {
 
 	return c.NoContent(http.StatusNoContent)
 }
+
+func (h *AppHandler) Logout(c echo.Context) error {
+	cookie := &http.Cookie{
+		Name:     "token",
+		Value:    "",
+		Expires:  time.Now(),
+		HttpOnly: true,
+		Path:     "/api",
+		SameSite: http.SameSiteStrictMode,
+	}
+	c.SetCookie(cookie)
+
+	return c.NoContent(http.StatusNoContent)
+}
