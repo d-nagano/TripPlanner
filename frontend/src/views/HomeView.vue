@@ -1,5 +1,5 @@
 <template>
   <div>
-    ログイン完了しました。
+    トップ画面
   </div>
 </template>

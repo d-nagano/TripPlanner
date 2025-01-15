@@ -16,3 +16,11 @@ export const fetchUserLogin = async (user: LoginRequest) => {
         throw error;
     }
 };
+
+export const fetchUserLogout = async () => {
+    try {
+        await axios.post('http://localhost/api/logout');
+    } catch (error: any) {
+        throw error;
+    }
+};
