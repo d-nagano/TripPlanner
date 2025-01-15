@@ -38,6 +38,7 @@ func Router(e *echo.Echo, appConfig *infra.AppConfig) {
 	e.GET("/api/prefectures", handler.GetPrefectures)
 	e.POST("/api/signup", handler.SignUp)
 	e.POST("/api/login", handler.Login)
+	e.POST("/api/logout", handler.Logout)
 
 	g := e.Group("/trip-planner")
 
