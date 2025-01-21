@@ -1,13 +1,20 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type TripPlan struct {
-	ID            int `gorm:"AUTO_INCREMENT"`
-	Title         string
-	Destination   string
-	DepartureDate time.Time `gorm:"type:datetime(6)"`
-	ArrivalDate   time.Time `gorm:"type:datetime(6)"`
-	CreatedAt     time.Time `gorm:"type:datetime(6)"`
-	UpdatedAt     time.Time `gorm:"type:datetime(6)"`
+	gorm.Model
+	ID            int       `gorm:"AUTO_INCREMENT" json:"id"`
+	Title         string    `json:"title"`
+	Destination   string    `json:"destination"`
+	DepartureDate time.Time `gorm:"type:datetime" json:"departure_date"`
+	ArrivalDate   time.Time `gorm:"type:datetime" json:"arrival_date"`
+	UserID        string    `json:"user_id"`
+	User          User      `gorm:"foreignKey:UserID"`
 }
+
+type TripPlanList []TripPlan
