@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -41,7 +42,13 @@ func (uu *userUseCase) SignUp(user models.User) error {
 		return err
 	}
 
+	userID, err := uuid.NewRandom()
+	if err != nil {
+		return err
+	}
+
 	newUser := &models.User{
+		ID:       userID.String(),
 		Name:     user.Name,
 		Email:    user.Email,
 		Password: string(hash),
