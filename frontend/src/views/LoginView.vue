@@ -38,7 +38,7 @@ export default defineComponent({
             try {
                 await fetchUserLogin(user);
                 alert("ログイン完了しました。")
-                router.push('/logout');
+                router.push('/trip-plan');
             } catch (err) {
                 if (axios.isAxiosError(err) && err.response) {
                     error.value = err.response.data;
