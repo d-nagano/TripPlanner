@@ -19,7 +19,7 @@ func NewTripPlanRepo(db *gorm.DB) TripPlanRepo {
 }
 
 func (tpr *tripPlanRepo) GetPlanByUserID(userID string) (*models.TripPlanList, error) {
-	var tripPlanList *models.TripPlanList
+	tripPlanList := &models.TripPlanList{}
 	if err := tpr.db.Where("user_id = ?", userID).Find(&tripPlanList).Error; err != nil {
 		return nil, err
 	}
