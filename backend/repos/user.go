@@ -33,7 +33,7 @@ func (ur *userRepo) CreateUser(user *models.User) error {
 }
 
 func (ur *userRepo) FindByEmail(email string) (*models.User, error) {
-	var user *models.User
+	user := &models.User{}
 	if err := ur.db.Where("email = ?", email).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
