@@ -1,7 +1,6 @@
 package repos
 
 import (
-	"fmt"
 	"trip-planner/models"
 
 	"gorm.io/gorm"
@@ -24,7 +23,6 @@ func (tpr *tripPlanRepo) GetPlanByUserID(userID string) (*models.TripPlanList, e
 	if err := tpr.db.Where("user_id = ?", userID).Find(&tripPlanList).Error; err != nil {
 		return nil, err
 	}
-	fmt.Println(tripPlanList)
 
 	return tripPlanList, nil
 }
