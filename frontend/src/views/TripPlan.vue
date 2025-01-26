@@ -59,8 +59,10 @@ export default defineComponent({
     setup() {
         const error = ref<string | null>(null);
         const tripPlans = ref<TripPlan[]>([]);
+        const loading = ref(false);
 
-        const GetTripPlanss = async () => {
+        const fetchTripPlanList = async () => {
+            loading.value = true;
             await fetchTripPlans()
                 .then(data => {
                     tripPlans.value = data
@@ -76,7 +78,7 @@ export default defineComponent({
         };
 
         onMounted(() => {
-            GetTripPlanss()
+            fetchTripPlanList()
         })
 
         return {
