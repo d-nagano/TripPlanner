@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"trip-planner/common"
 	"trip-planner/models"
 	"trip-planner/requests"
 	"trip-planner/usecases"
@@ -19,7 +20,7 @@ func (h *AppHandler) SignUp(c echo.Context) error {
 	if errs := req.Validate(); errs != nil {
 		var errorMessages []string
 		for _, err := range errs {
-			h.Logger.Warn().Msg(err.Error())
+			common.LogError(c, err)
 			switch err {
 			case requests.ErrEmptyName:
 				errorMessages = append(errorMessages, "名前は必須です。")
@@ -53,12 +54,11 @@ func (h *AppHandler) SignUp(c echo.Context) error {
 		Password: req.Password,
 	}
 	if err := uu.SignUp(user); err != nil {
+		common.LogError(c, err)
 		switch err {
 		case usecases.ErrDuplicateEmail:
-			h.Logger.Warn().Msg(err.Error())
 			return c.JSON(http.StatusBadRequest, "このメールアドレスは既に登録済みです。")
 		default:
-			h.Logger.Error().Msg(err.Error())
 			return c.JSON(http.StatusInternalServerError, "ユーザーの登録中にエラーが発生しました。")
 		}
 
@@ -81,12 +81,11 @@ func (h *AppHandler) Login(c echo.Context) error {
 	}
 	token, err := uu.Login(user)
 	if err != nil {
+		common.LogError(c, err)
 		switch err {
 		case usecases.ErrPasswordMismatch, usecases.ErrUserNotExist:
-			h.Logger.Warn().Msg(err.Error())
 			return c.JSON(http.StatusUnauthorized, "ログインに失敗しました。入力されたログイン情報が間違っています。")
 		default:
-			h.Logger.Error().Msg(err.Error())
 			return c.JSON(http.StatusInternalServerError, "ログイン中にエラーが発生しました。")
 		}
 	}

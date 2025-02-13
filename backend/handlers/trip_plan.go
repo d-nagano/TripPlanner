@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"trip-planner/common"
 	"trip-planner/infra"
 	"trip-planner/usecases"
 
@@ -17,7 +18,7 @@ func (h *AppHandler) GetTripPlans(c echo.Context) error {
 	tpu := usecases.NewTripPlanUseCase(h.AppConfig.DB)
 	tpl, err := tpu.GetTripPlans(userID)
 	if err != nil {
-		h.Logger.Error().Msg(err.Error())
+		common.LogError(c, err)
 		return c.JSON(http.StatusInternalServerError, "データ取得中にエラーが発生しました。")
 	}
 
