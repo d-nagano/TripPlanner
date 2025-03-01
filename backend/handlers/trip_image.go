@@ -18,5 +18,5 @@ func (h *AppHandler) UploadImage(c echo.Context) error {
 
 	// ToDo: ファイルのアップロード機能追加
 
-	return c.NoContent(http.StatusNoContent)
+	return c.JSON(http.StatusNotImplemented, nil)
 }

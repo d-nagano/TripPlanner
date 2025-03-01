@@ -1,8 +1,6 @@
 package usecases
 
 import (
-	"encoding/json"
-	"fmt"
 	"trip-planner/models"
 	"trip-planner/repos"
 
@@ -16,12 +14,14 @@ type TripPlanUseCase interface {
 }
 
 type tripPlanUseCase struct {
+	db           *gorm.DB
 	tripPlanRepo repos.TripPlanRepo
 	tripDayRepo  repos.TripDayRepo
 }
 
 func NewTripPlanUseCase(db *gorm.DB) TripPlanUseCase {
 	return &tripPlanUseCase{
+		db:           db,
 		tripPlanRepo: repos.NewTripPlanRepo(db),
 		tripDayRepo:  repos.NewTripDayRepoRepo(db),
 	}
@@ -43,10 +43,10 @@ func (tpu *tripPlanUseCase) RegisterTripPlan(tripPlan *models.TripPlan) (string,
 	}
 	tripPlan.ID = tripID.String()
 	startDate := tripPlan.StartDate
-	diffDays := tripPlan.EndDate.Sub(startDate).Hours() / 24
+	diffDays := int(tripPlan.EndDate.Sub(startDate).Hours() / 24)
 
-	tripDayList := make(models.TripDayList, 0, int(diffDays)+1)
-	for i := 0; i <= int(diffDays); i++ {
+	tripDayList := make(models.TripDayList, 0, diffDays+1)
+	for i := 0; i <= diffDays; i++ {
 		tripDayID, err := uuid.NewRandom()
 		if err != nil {
 			return "", err
@@ -61,13 +61,19 @@ func (tpu *tripPlanUseCase) RegisterTripPlan(tripPlan *models.TripPlan) (string,
 		tripDayList = append(tripDayList, tripDay)
 	}
 
-	out, _ := json.Marshal(tripDayList)
-	fmt.Println(string(out))
+	if err = tpu.db.Transaction(func(tx *gorm.DB) error {
+		txTripPlanRepo := repos.NewTripPlanRepo(tx)
+		txTripDayRepo := repos.NewTripDayRepoRepo(tx)
 
-	if err := tpu.tripPlanRepo.Create(tripPlan); err != nil {
-		return "", err
-	}
-	if err := tpu.tripDayRepo.Creates(tripDayList); err != nil {
+		if err := txTripPlanRepo.Create(tripPlan); err != nil {
+			return err
+		}
+		if err := txTripDayRepo.Creates(tripDayList); err != nil {
+			return err
+		}
+
+		return nil
+	}); err != nil {
 		return "", err
 	}
 
