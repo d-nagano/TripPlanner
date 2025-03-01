@@ -32,7 +32,12 @@ const router = createRouter({
     {
       path: '/trip-plan',
       name: 'trip-plan',
-      component: () => import('../views/TripPlan.vue')
+      component: () => import('../views/TripPlanView.vue')
+    },
+    {
+      path: '/trip-plan/new',
+      name: 'register-trip-plan',
+      component: () => import('../views/RegisterNew.vue')
     },
   ]
 })
