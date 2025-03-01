@@ -20,7 +20,6 @@ func (h *AppHandler) SignUp(c echo.Context) error {
 	if errs := req.Validate(); errs != nil {
 		var errorMessages []string
 		for _, err := range errs {
-			common.LogError(c, err)
 			switch err {
 			case requests.ErrEmptyName:
 				errorMessages = append(errorMessages, "名前は必須です。")
@@ -43,6 +42,7 @@ func (h *AppHandler) SignUp(c echo.Context) error {
 			}
 		}
 
+		common.LogErrors(c, errs)
 		return c.JSON(http.StatusBadRequest, strings.Join(errorMessages, "\n"))
 	}
 

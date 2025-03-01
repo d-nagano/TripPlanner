@@ -17,7 +17,7 @@ func ContextMiddleware(db *gorm.DB) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			userID := validateToken(c)
-			if  userID == ""{
+			if userID == "" {
 				slogecho.AddCustomAttributes(c, slog.String("error msg", "invalid token"))
 				return c.JSON(http.StatusUnauthorized, "トークンが不正です。")
 			}
