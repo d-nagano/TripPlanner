@@ -37,7 +37,6 @@ export default defineComponent({
         const login = async (user: LoginRequest) => {
             try {
                 await fetchUserLogin(user);
-                alert("ログイン完了しました。")
                 router.push('/trip-plan');
             } catch (err) {
                 if (axios.isAxiosError(err) && err.response) {

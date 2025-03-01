@@ -10,7 +10,7 @@
                         entirely.
                     </p>
                     <p>
-                        <a href="#" class="btn btn-primary my-2">Register new</a>
+                        <router-link to="/trip-plan/new" class="btn btn-primary my-2">Register new</router-link>
                     </p>
                 </div>
             </div>
@@ -18,7 +18,6 @@
 
         <div class="album py-5 bg-body-tertiary">
             <div class="container">
-
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <div class="col" v-for="tripPlan in tripPlans">
                         <div class="card shadow-sm">
@@ -27,7 +26,7 @@
                                 preserveAspectRatio="xMidYMid slice" focusable="false">
                             <div class="card-body">
                                 <p class="card-text trip-plan-text">{{ tripPlan.title }}</p>
-                                <p class="card-text">{{ tripPlan.departure_date }} ~ {{ tripPlan.arrival_date }}</p>
+                                <p class="card-text">{{ tripPlan.start_date }} ~ {{ tripPlan.end_date }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
@@ -37,8 +36,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -50,19 +47,16 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { fetchTripPlans } from '../hooks/tripPlans';
-import type { TripPlan } from "../types/tripPlans.ts";
+import type { TripPlan } from "../types/tripPlans";
 import axios from 'axios';
 import { onMounted } from 'vue'
 
 export default defineComponent({
-
     setup() {
         const error = ref<string | null>(null);
         const tripPlans = ref<TripPlan[]>([]);
-        const loading = ref(false);
 
         const fetchTripPlanList = async () => {
-            loading.value = true;
             await fetchTripPlans()
                 .then(data => {
                     tripPlans.value = data
@@ -80,6 +74,7 @@ export default defineComponent({
         onMounted(() => {
             fetchTripPlanList()
         })
+
 
         return {
             tripPlans,

@@ -1,7 +1,11 @@
 export type TripPlan = {
-    id: number
+    id: string
     title: string
     destination: string
-    departure_date: Date
-    arrival_date: Date
+    start_date: Date
+    end_date: Date
+}
+
+export type RegisterTripPlanResponse = {
+    id: string
 }
