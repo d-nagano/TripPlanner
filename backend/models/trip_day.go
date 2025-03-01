@@ -13,3 +13,5 @@ type TripDay struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
+
+type TripDayList []*TripDay

@@ -54,4 +54,7 @@ func Router(e *echo.Echo, appConfig *infra.AppConfig) {
 	g.Use(echojwt.WithConfig(jwtConfig))
 	g.Use(tpm.ContextMiddleware(appConfig.DB))
 	g.GET("", handler.GetTripPlans)
+	g.POST("", handler.RegisterTripPlan)
+
+	g.POST("/:tripID/image", handler.UploadImage)
 }

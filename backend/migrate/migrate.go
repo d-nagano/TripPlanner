@@ -30,7 +30,7 @@ func main() {
 		}
 	}()
 
-	if err := dbConn.AutoMigrate(&models.User{}, &models.TripPlan{},&models.TripDay{}); err != nil {
+	if err := dbConn.AutoMigrate(&models.User{}, &models.TripPlan{}, &models.TripDay{}); err != nil {
 		log.Fatalln(err)
 		return
 	}
