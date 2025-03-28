@@ -24,6 +24,8 @@ func main() {
 
 	requests.InitValidator()
 
+	e.Static("/api/tmp", "/var/www/backend/tmp")
+
 	router.Router(e, appConfig)
 
 	e.Logger.Fatal(e.Start(":8000"))

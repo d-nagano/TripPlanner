@@ -1,22 +1,29 @@
 package handlers
 
 import (
-	"log/slog"
 	"net/http"
+	"trip-planner/common"
 	"trip-planner/infra"
+	"trip-planner/usecases"
 
 	"github.com/labstack/echo/v4"
-	slogecho "github.com/samber/slog-echo"
 )
 
 func (h *AppHandler) UploadImage(c echo.Context) error {
-	tripID := c.Param("tripID")
-
 	ctx := c.(*infra.CustomContext)
-	slogecho.AddCustomAttributes(c, slog.String("user_id", ctx.ActingUser.ID))
-	slogecho.AddCustomAttributes(c, slog.String("trip_plan_id", tripID))
+	
+	tripID := c.Param("tripID")
+	file, err := c.FormFile("file")
+	if err != nil {
+		common.LogError(c, err)
+		return c.JSON(http.StatusInternalServerError, "ファイルの取得中にエラーが発生しました。")
+	}
 
-	// ToDo: ファイルのアップロード機能追加
+	tiu := usecases.NewTripImageUseCase(h.AppConfig.DB)
+	if err := tiu.UploadFile(ctx.ActingUser.ID, tripID, file); err != nil {
+		common.LogError(c, err.Error)
+		c.JSON(err.StatusCode, err.Message)
+	}
 
-	return c.JSON(http.StatusNotImplemented, nil)
+	return c.NoContent(http.StatusNoContent)
 }

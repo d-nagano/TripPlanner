@@ -20,7 +20,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/var/www/backend
-      - ../frontend/dist:/var/www/frontend/dist
+      - ./frontend/dist:/var/www/frontend/dist
     depends_on:
       - db
 
