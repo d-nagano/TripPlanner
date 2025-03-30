@@ -22,7 +22,7 @@ func (h *AppHandler) UploadImage(c echo.Context) error {
 	tiu := usecases.NewTripImageUseCase(h.AppConfig.DB)
 	if err := tiu.UploadFile(ctx.ActingUser.ID, tripID, file); err != nil {
 		common.LogError(c, err.Error)
-		c.JSON(err.StatusCode, err.Message)
+		return c.JSON(err.StatusCode, err.Message)
 	}
 
 	return c.NoContent(http.StatusNoContent)
