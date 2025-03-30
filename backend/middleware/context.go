@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"log/slog"
 	"net/http"
 	"trip-planner/common"
@@ -18,7 +19,7 @@ func ContextMiddleware(db *gorm.DB) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			userID := validateToken(c)
 			if userID == "" {
-				slogecho.AddCustomAttributes(c, slog.String("error msg", "invalid token"))
+				common.LogError(c, errors.New("invalid token"))
 				return c.JSON(http.StatusUnauthorized, "トークンが不正です。")
 			}
 
@@ -26,8 +27,14 @@ func ContextMiddleware(db *gorm.DB) echo.MiddlewareFunc {
 			actingUser, err := uRepo.FindByID(userID)
 			if err != nil {
 				common.LogError(c, err)
+				return c.JSON(http.StatusInternalServerError, "ユーザーの取得中にエラーが発生しました")
+			}
+			if actingUser == nil{
+				common.LogError(c, errors.New("acting user is nil"))
 				return c.JSON(http.StatusNotFound, "ユーザーの取得中にエラーが発生しました")
 			}
+			slogecho.AddCustomAttributes(c, slog.String("user_id", actingUser.ID))
+
 			ctx := &infra.CustomContext{
 				Context:    c,
 				ActingUser: actingUser,

@@ -10,4 +10,4 @@ RUN go mod download && go mod verify
 COPY . .
 RUN go install github.com/air-verse/air@latest
 
-CMD ["air", "-c", ".air.toml"]
+CMD mkdir -p /var/www/backend/tmp/upload && air -c .air.toml

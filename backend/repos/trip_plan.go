@@ -10,6 +10,7 @@ import (
 type TripPlanRepo interface {
 	Create(tripPlan *models.TripPlan) error
 	GetPlanByUserID(userID string) (*models.TripPlanList, error)
+	GetPlanByID(tripID string) (*models.TripPlan, error)
 }
 
 type tripPlanRepo struct {

@@ -61,6 +61,7 @@ import { useRouter } from "vue-router";
 import axios from 'axios';
 
 const src = ref(null);
+const selectedFile = ref(null);
 const tripPlan = ref({
     title: '',
     destination: '',
@@ -69,19 +70,22 @@ const tripPlan = ref({
 });
 const router = useRouter();
 
-function onFileSelect(event) {
+const onFileSelect = (event) => {
     const file = event.files[0];
-    src.value = URL.createObjectURL(file);
+    if (file) {
+        src.value = URL.createObjectURL(file);
+        selectedFile.value = file
+    }
 }
 
 const onSubmit = async () => {
     try {
         const tripId = await registerTripPlan(tripPlan.value);
 
-        // ToDO:ファイルアップロード機能の追加
-        // if (selectedFile.value) {
-        // await uploadImage(tripId);
-        // }
+        // ToDO: ファイルアップロード機能の追加
+        if (selectedFile.value) {
+            await uploadImage(tripId, selectedFile.value);
+        }
 
         await router.push('/trip-plan');
     } catch (error) {

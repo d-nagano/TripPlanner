@@ -19,9 +19,12 @@ export const registerTripPlan = async (tripPlan: TripPlan): Promise<string> => {
     }
 };
 
-export const uploadImage = async (tripID: string) => {
+export const uploadImage = async (tripID: string, file: File) => {
     try {
-        await axios.post(`http://localhost/api/trip-plan/${tripID}/image`);
+        const data = new FormData()
+        data.append('file', file)
+        const headers = { 'Content-Type': 'multipart/form-data' }
+        await axios.post(`http://localhost/api/trip-plan/${tripID}/image`, data, { headers });
     } catch (error: any) {
         throw error;
     }

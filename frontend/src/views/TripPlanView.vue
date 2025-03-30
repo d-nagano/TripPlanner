@@ -22,8 +22,9 @@
                     <div class="col" v-for="tripPlan in tripPlans">
                         <div class="card shadow-sm">
                             <img class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                src="../assets/hokkaido.png" role="img" aria-label="Placeholder: Thumbnail"
-                                preserveAspectRatio="xMidYMid slice" focusable="false">
+                                :src="`http://localhost/api/tmp/upload/${tripPlan.id}.png`" role="img"
+                                aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                                focusable="false">
                             <div class="card-body">
                                 <p class="card-text trip-plan-text">{{ tripPlan.title }}</p>
                                 <p class="card-text">{{ tripPlan.start_date }} ~ {{ tripPlan.end_date }}</p>
