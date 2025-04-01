@@ -14,15 +14,22 @@ TripPlanner は、ユーザーが旅行プランを作成・管理できる Web 
    cd TripPlanner
    ```
 
-2. コンテナを起動
+2. 環境変数の設定
    ```sh
+   cd backend
+   cp .env.example .env
+   ```
+
+3. コンテナを起動
+   ```sh
+   cd ..
    // Docker コンテナ起動
-   mkae up
-   // DB 作成
+   make up
+   // データベースのマイグレーション適用
    make migrate
    ```
 
-3. URLにアクセス
+4. ユーザー登録ページにアクセスする
    ```
    http://localhost/signup
    ```
